@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VCB Bakery Menu</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cream: #fdf6ee;
+        --warm-white: #fffaf5;
+        --brown-deep: #3d1f0d;
+        --brown-mid: #7b3f1e;
+        --brown-light: #c4845a;
+        --peach: #f0bfa0;
+        --peach-light: #faeада;
+        --peach-pale: #fdf1e7;
+        --gold: #c8923a;
+        --text-dark: #2c1508;
+        --text-mid: #6b3a22;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--cream);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        color: var(--text-dark);
+        min-height: 100vh;
+      }
+
+      .page {
+        max-width: 860px;
+        margin: 0 auto;
+        background: var(--warm-white);
+        padding: 56px 48px 64px;
+        position: relative;
+      }
+
+      /* Thin border frame */
+      .page::before {
+        content: "";
+        position: absolute;
+        inset: 16px;
+        border: 1px solid var(--peach);
+        pointer-events: none;
+        z-index: 0;
+        border-radius: 2px;
+      }
+
+      /* Corner ornaments */
+      .corner {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        z-index: 1;
+      }
+      .corner svg {
+        width: 100%;
+        height: 100%;
+      }
+      .corner-tl {
+        top: 10px;
+        left: 10px;
+      }
+      .corner-tr {
+        top: 10px;
+        right: 10px;
+        transform: scaleX(-1);
+      }
+      .corner-bl {
+        bottom: 10px;
+        left: 10px;
+        transform: scaleY(-1);
+      }
+      .corner-br {
+        bottom: 10px;
+        right: 10px;
+        transform: scale(-1);
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo-img {
+        width: 120px;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      .bakery-name {
+        font-family: "Playfair Display", serif;
+        font-size: 40px;
+        font-weight: 700;
+        color: var(--brown-deep);
+        letter-spacing: 1px;
+        line-height: 1;
+      }
+
+      .tagline {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--brown-light);
+        margin-top: 8px;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 18px auto;
+        max-width: 280px;
+      }
+      .divider-line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--peach),
+          transparent
+        );
+      }
+      .divider-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--brown-light);
+      }
+
+      .menu-title {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: var(--brown-mid);
+      }
+
+      /* Table header */
+      .price-header {
+        display: grid;
+        grid-template-columns: 120px 1fr 120px 120px;
+        background: var(--brown-deep);
+        border-radius: 8px 8px 0 0;
+        padding: 16px 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .price-header span {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #f5dfc8;
+      }
+
+      .price-header span:not(:first-child) {
+        text-align: center;
+      }
+
+      /* Menu list */
+      .menu-list {
+        border: 1.5px solid var(--peach);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+      }
+
+      .menu-item {
+        display: grid;
+        grid-template-columns: 120px 1fr 120px 120px;
+        align-items: center;
+        border-bottom: 1px solid #f0ddd0;
+        transition:
+          background 0.2s ease,
+          border-left 0.2s ease;
+        animation: fadeUp 0.45s ease both;
+        border-left: 3px solid transparent;
+      }
+
+      .menu-item:last-child {
+        border-bottom: none;
+      }
+      .menu-item:nth-child(odd) {
+        background: var(--warm-white);
+      }
+      .menu-item:nth-child(even) {
+        background: var(--peach-pale);
+      }
+      .menu-item:hover {
+        background: #fde5cc;
+        border-left-color: var(--brown-light);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .menu-item:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .menu-item:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .menu-item:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .menu-item:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .menu-item:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .menu-item:nth-child(6) {
+        animation-delay: 0.3s;
+      }
+
+      .item-photo {
+        width: 120px;
+        height: 115px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .item-name {
+        padding: 0 24px;
+      }
+
+      .item-name-text {
+        font-family: "Playfair Display", serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--brown-mid);
+        line-height: 1.3;
+      }
+
+      .item-name-text.khmer {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .item-price {
+        text-align: center;
+        padding: 0 8px;
+      }
+
+      .price-amount {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--brown-deep);
+        display: block;
+      }
+
+      .price-symbol {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--brown-light);
+        margin-right: 1px;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        margin-top: 36px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-greeting {
+        font-family: "Playfair Display", serif;
+        font-size: 17px;
+        font-style: italic;
+        color: var(--brown-mid);
+      }
+
+      .footer-heart {
+        color: var(--gold);
+        margin: 0 4px;
+      }
+
+      .contact {
+        margin-top: 8px;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        color: var(--brown-light);
+        text-transform: uppercase;
+      }
+      .logo-img {
+        width: 400px;
+        height: 160px;
+        object-fit: contain;
+        border-radius: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- Corner ornaments -->
+      <div class="corner corner-tl">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M2 38 L2 2 L38 2"
+            stroke="#c4845a"
+            stroke-width="1.5"
+            fill="none"
+          />
+          <circle cx="2" cy="2" r="2.5" fill="#c4845a" />
+        </svg>
+      </div>
+      <div class="corner corner-tr">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M2 38 L2 2 L38 2"
+            stroke="#c4845a"
+            stroke-width="1.5"
+            fill="none"
+          />
+          <circle cx="2" cy="2" r="2.5" fill="#c4845a" />
+        </svg>
+      </div>
+      <div class="corner corner-bl">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M2 38 L2 2 L38 2"
+            stroke="#c4845a"
+            stroke-width="1.5"
+            fill="none"
+          />
+          <circle cx="2" cy="2" r="2.5" fill="#c4845a" />
+        </svg>
+      </div>
+      <div class="corner corner-br">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M2 38 L2 2 L38 2"
+            stroke="#c4845a"
+            stroke-width="1.5"
+            fill="none"
+          />
+          <circle cx="2" cy="2" r="2.5" fill="#c4845a" />
+        </svg>
+      </div>
+
+      <!-- Header -->
+      <div class="header">
+        <!-- Replace with your actual logo: <img class="logo-img" src="logo.png" alt="VCB Bakery"> -->
+        <img class="logo-img" src="logo.jpg" alt="VCB Bakery" />
+        <!-- <div class="bakery-name">VCB Bakery</div> -->
+        <div class="tagline">Healthy Food Fresh &amp; Tasty</div>
+        <div class="divider">
+          <div class="divider-line"></div>
+          <div class="divider-dot"></div>
+          <div class="divider-line"></div>
+        </div>
+        <div class="menu-title">Our Menu</div>
+      </div>
+
+      <!-- Price column headers -->
+      <div class="price-header">
+        <span></span>
+        <span>Product</span>
+        <span>0.5 kg</span>
+        <span>1 kg</span>
+      </div>
+
+      <!-- Menu items -->
+      <div class="menu-list">
+        <div class="menu-item">
+          <img class="item-photo" src="nampreil.png" alt="នំព្រិល" />
+          <div class="item-name">
+            <span class="item-name-text khmer">នំព្រិល</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>20.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>40.00</span
+            >
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img
+            class="item-photo"
+            src="double-choco.png"
+            alt="Double Chocolate Cookies"
+          />
+          <div class="item-name">
+            <span class="item-name-text">Double Chocolate Cookies</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>10.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>18.00</span
+            >
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img class="item-photo" src="matcha.png" alt="Matcha Cookies" />
+          <div class="item-name">
+            <span class="item-name-text">Matcha Cookies</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>10.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>18.00</span
+            >
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img
+            class="item-photo"
+            src="chocochip.png"
+            alt="Chocolate Chip Cookies"
+          />
+          <div class="item-name">
+            <span class="item-name-text">Chocolate Chip Cookies</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>9.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>15.00</span
+            >
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img class="item-photo" src="almond.png" alt="Almond Cookies" />
+          <div class="item-name">
+            <span class="item-name-text">Almond Cookies</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>9.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>15.00</span
+            >
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <img class="item-photo" src="cashew.png" alt="Cashew Cookies" />
+          <div class="item-name">
+            <span class="item-name-text">Cashew Cookies</span>
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>9.00</span
+            >
+          </div>
+          <div class="item-price">
+            <span class="price-amount"
+              ><span class="price-symbol">$</span>15.00</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="divider" style="margin-top: 32px">
+          <div class="divider-line"></div>
+          <div class="divider-dot"></div>
+          <div class="divider-line"></div>
+        </div>
+        <p class="footer-greeting">
+          <span class="footer-heart">♥</span> Have a great day!
+          <span class="footer-heart">♥</span>
+        </p>
+        <p class="contact">TEL: 098 722 166</p>
+      </div>
+    </div>
+  </body>
+</html>
